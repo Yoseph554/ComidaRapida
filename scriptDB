@@ -1,0 +1,45 @@
+import sqlite3
+
+# Conexión a la base de datos
+conn = sqlite3.connect('/Users/yosephflores/Desktop/Empresas/SuperPollos/menu.db')
+c = conn.cursor()
+
+# Crear tabla si no existe
+c.execute('''
+CREATE TABLE IF NOT EXISTS menu (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    categoria TEXT,
+    producto TEXT,
+    precio REAL
+)
+''')
+
+# Datos del menú
+menu_items = [
+    ('Pollo Frito', 'Pollo Entero', 350),
+    ('Pollo Frito', 'Medio Pollo', 200),
+    ('Pollo Frito', 'Cuarto de Pollo', 50),
+    ('Pollo Frito', 'Pollo con Tajadas', 90),
+    ('Pollo Frito', 'Sopa de Pollo', 90),
+    ('Variedad', 'Pastelitos (sencillo)', 15),
+    ('Variedad', 'Pastelitos (con más ingredientes)', 35),
+    ('Variedad', 'Baleadas (sencillo)', 10),
+    ('Variedad', 'Baleadas (con más ingredientes)', 20),
+    ('Variedad', 'Arroz con frijoles', 90),
+    ('Bebidas', 'Coca Cola 2L', 50),
+    ('Bebidas', 'Coca Cola 1L', 25),
+    ('Bebidas', 'Jugo de caja 1L', 35),
+    ('Bebidas', 'Coffee', 15)
+]
+
+# Insertar datos en la tabla
+c.executemany('''
+INSERT INTO menu (categoria, producto, precio)
+VALUES (?, ?, ?)
+''', menu_items)
+
+# Guardar cambios y cerrar conexión
+conn.commit()
+conn.close()
+
+print("Base de datos creada y datos insertados exitosamente.")
